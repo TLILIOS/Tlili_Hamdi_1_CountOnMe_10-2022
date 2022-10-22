@@ -64,6 +64,7 @@ class CalculatorModel {
     private var expressionIsEmpty:Bool {
         return elements.isEmpty
     }
+    
     // MARK: - Private methods
     
     // Check if multiplication or divison, if so it will return concerned operand index.
@@ -149,7 +150,17 @@ extension CalculatorModel {
             let right = Double(operationsToReduce[index + 1])!
             
             var result: Double = 0.0
-            
+            // check if the result is an integer
+            func resultIsAnInteger() -> Bool {
+                if result.truncatingRemainder(dividingBy: 1) == 0 {
+                    result = 0
+                  print("\(result) Is an integer")
+                } else {
+                    result = 0.0
+                print("\(result) Is an decimal")
+                }
+               return false
+            }
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
@@ -167,8 +178,9 @@ extension CalculatorModel {
             
             let startIndex: Int = index-1
             let endIndex: Int = index+1
-            
+           
             operationsToReduce.replaceSubrange(Range(startIndex...endIndex), with: [String(result)])
+            resultIsAnInteger()
         }
         let result = "  \(operationsToReduce.first!)"
         self.currentOperation.append(result)
