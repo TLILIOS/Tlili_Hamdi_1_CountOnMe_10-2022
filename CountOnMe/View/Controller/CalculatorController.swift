@@ -54,7 +54,6 @@ class CalculatorController: UIViewController {
     }
 
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        self.resetTextView()
         model.calculate()
     }
 }

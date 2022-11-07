@@ -42,16 +42,20 @@ class CalculatorModel {
     }
     
     //check computed variables:
-    // Check if the last element is a number not a operand
+    //Check if the last element is a number not a operand
     private var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "X" && elements.last != "/"
     }
-    
+    //Check if the first element is not a operand
+    private var startWithNumber: Bool {
+        elements.first != "+" && elements.first != "-" && elements.first != "X" && elements.first != "/"
+    }
     private var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
     
     private var canAddOperator: Bool {
+        guard elements.last != nil else { return false }
         return elements.last != "+" && elements.last != "-" && elements.last != "X" && elements.last != "/"
     }
     
@@ -87,19 +91,23 @@ class CalculatorModel {
 extension CalculatorModel {
     
     func add(number: String) {
+        //The Operation starts with ZERO "0"
         if number == "0", currentOperation.count == 0 {
-          print("Le calcul commence par un zero")
         } else {
-            if currentOperation.count == 0, number != "0" {
+            //Remove default view "0"
+            if currentOperation.count == 0, number != "0" && startWithNumber {
                 delegate.deleteZero()
             }
             if expressionHaveResult {
-                self.currentOperation = ""
+                delegate.addText(text: number)
+                self.currentOperation.append(number)
                 self.resetText()
+               
             }
-            
-            self.currentOperation.append(number)
             delegate.addText(text: number)
+            self.currentOperation.append(number)
+            
+            
         }
     }
     
@@ -109,17 +117,18 @@ extension CalculatorModel {
             self.currentOperation = "\(elements.last ?? "")\(symbol.getSymbolString())"
             delegate.addText(text: self.currentOperation)
         }
-        else if canAddOperator && expressionIsCorrect {
+        else if canAddOperator {
             let text = symbol.getSymbolString()
             delegate.addText(text: text)
             self.currentOperation.append(text)
-            print("text: \(self.currentOperation)")
+            
         }
         else {
             delegate.showAlertController(
                 title: "Zéro!",
-                message: "Un operateur est déja mis !"
+                message: "Vous ne pouvez pas ajouter d'opérateur sur cette expression !"
             )
+            resetText()
         }
     }
     
@@ -130,7 +139,7 @@ extension CalculatorModel {
     
     func calculate() {
         guard expressionIsCorrect else {
-            self.delegate.showAlertController(title: "Zéro!", message: "Entrez une expression correcte !")
+            self.delegate.showAlertController(title: "Zéro!", message: "Expression incorrecte !")
             return
         }
         
@@ -145,9 +154,14 @@ extension CalculatorModel {
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
             let index = checkPriorityOperand(arrayOfElements: operationsToReduce)
-            let left = Double(operationsToReduce[index - 1])!
+            guard let left = Double(operationsToReduce[index - 1]) else {
+                self.delegate.showAlertController(title: "Zéro!", message: "1er élément incorrect")
+                return
+            }
             let operand = operationsToReduce[index]
-            let right = Double(operationsToReduce[index + 1])!
+            guard let right = Double(operationsToReduce[index + 1]) else {
+                self.delegate.showAlertController(title: "Zéro!", message: "2")
+            }
             
             var result: Double = 0.0
             
@@ -158,14 +172,14 @@ extension CalculatorModel {
             case "/": if right != 0 {
                 result = left / right
             } else {
-                    delegate.showAlertController(
-                        title: "Zéro!",
-                        message: "Division par Zéro non autorise  !")
-                }
-                        
+                delegate.showAlertController(
+                    title: "Zéro!",
+                    message: "Division par Zéro non autorise  !")
+            }
+                
             default: fatalError("Unknown operator !")
                 
-                        }
+            }
             
             let startIndex: Int = index-1
             let endIndex: Int = index+1
@@ -177,7 +191,7 @@ extension CalculatorModel {
         }
         
         let result = "  \(operationsToReduce.first!)"
-        
+        resetText()
         self.currentOperation.append(result)
         
         delegate.addText(text: result)
@@ -190,5 +204,5 @@ extension CalculatorModel {
         }
         return false
     }
-           
+
 }
