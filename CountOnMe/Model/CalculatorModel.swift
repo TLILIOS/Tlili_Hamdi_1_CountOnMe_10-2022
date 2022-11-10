@@ -39,18 +39,20 @@ class CalculatorModel {
     
     //check computed variables:
     //Check if the last element is a number not a operand
-    private var expressionIsCorrect: Bool {
+    /*private var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "X" && elements.last != "/"
     }
+    */
     //Check if the first element is not a operand
-    private var startWithNumber: Bool {
+    /*private var startWithNumber: Bool {
         elements.first != "+" && elements.first != "-" && elements.first != "X" && elements.first != "/"
     }
+    */
     private var expressionHaveEnoughElement: Bool {
         return elements.count >= 2
     }
     
-    private var canAddOperator: Bool {
+    private var expressionIsCorrect: Bool {
         guard elements.last != nil else { return false }
         return elements.last != "+" && elements.last != "-" && elements.last != "X" && elements.last != "/"
     }
@@ -115,7 +117,7 @@ extension CalculatorModel {
             delegate.addText(text: self.currentOperation)
             resetText()
         }
-        else if canAddOperator {
+        else if expressionIsCorrect {
             let text = symbol.getSymbolString()
             delegate.addText(text: text)
             self.currentOperation.append(text)
@@ -179,14 +181,13 @@ extension CalculatorModel {
             default: fatalError("Unknown operator !")
                 
             }
-            
             let startIndex: Int = index-1
             let endIndex: Int = index+1
             
             let resultNumber: Any = resultIsAnInteger(number: result) ? Int(result) : result
             
             operationsToReduce.replaceSubrange(Range(startIndex...endIndex), with: [String(describing: resultNumber)])
-            
+            currentOperation = operand
         }
         
         let result = "  \(operationsToReduce.first!)"
