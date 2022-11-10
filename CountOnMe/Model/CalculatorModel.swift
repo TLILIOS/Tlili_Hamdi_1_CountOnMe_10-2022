@@ -30,26 +30,15 @@ class CalculatorModel {
         self.delegate = delegate
     }
 
-    private var currentOperation: String = ""
+    private var currentOperation: String = "0"
     
     // Return an array with the splitted expression
     private var elements: [String] {
         return self.currentOperation.split(separator: " ").map { "\($0)" }
     }
     
-    //check computed variables:
-    //Check if the last element is a number not a operand
-    /*private var expressionIsCorrect: Bool {
-        return elements.last != "+" && elements.last != "-" && elements.last != "X" && elements.last != "/"
-    }
-    */
-    //Check if the first element is not a operand
-    /*private var startWithNumber: Bool {
-        elements.first != "+" && elements.first != "-" && elements.first != "X" && elements.first != "/"
-    }
-    */
     private var expressionHaveEnoughElement: Bool {
-        return elements.count >= 2
+        return elements.count >= 3
     }
     
     private var expressionIsCorrect: Bool {
@@ -90,7 +79,7 @@ extension CalculatorModel {
     
     func add(number: String) {
         //The Operation starts with ZERO "0"
-        if number == "0" , currentOperation.count == 0 || currentOperation.count == 1 && number == "0."  {
+        if number == "0" , currentOperation.count == 0  {
             self.currentOperation.append(number)
         } else {
             //Remove default view "0"
@@ -116,6 +105,7 @@ extension CalculatorModel {
             self.currentOperation = "\(elements.last ?? "")\(symbol.getSymbolString())"
             delegate.addText(text: self.currentOperation)
             resetText()
+            
         }
         else if expressionIsCorrect {
             let text = symbol.getSymbolString()
@@ -133,7 +123,7 @@ extension CalculatorModel {
     }
     
     func resetText() {
-        self.currentOperation = ""
+        self.currentOperation = "0"
         self.delegate.resetTextView()
     }
     
@@ -155,12 +145,12 @@ extension CalculatorModel {
         while operationsToReduce.count > 1 {
             let index = checkPriorityOperand(arrayOfElements: operationsToReduce)
             guard let left = Double(operationsToReduce[index - 1]) else {
-                self.delegate.showAlertController(title: "Zéro!", message: "1er élément incorrect")
+                self.delegate.showAlertController(title: "Zéro!", message: "1er numéro est incorrect")
                 return
             }
             let operand = operationsToReduce[index]
             guard let right = Double(operationsToReduce[index + 1]) else {
-                self.delegate.showAlertController(title: "Zéro!", message: "2ème élément incorrect")
+                self.delegate.showAlertController(title: "Zéro!", message: "2ème numéro est incorrect")
                 return
             }
             

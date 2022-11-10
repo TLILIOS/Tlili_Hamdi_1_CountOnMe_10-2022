@@ -75,7 +75,7 @@ extension CalculatorController: CalculatorDelegate {
     }
     
     func resetTextView() {
-        textView.text = ""
+        textView.text = " "
     }
 
     func addText(text: String) {

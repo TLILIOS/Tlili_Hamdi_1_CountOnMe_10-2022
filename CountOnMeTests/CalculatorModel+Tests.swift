@@ -3,35 +3,30 @@ import XCTest
 
 class CalculatorModel_Tests: XCTestCase {
     
-//    typealias NameAndAge = (name: String, age: Int)
-    //        let nameAndAge: NameAndAge = ("Maxime", 30)
-    //        nameAndAge.name
-    //        nameAndAge.age
-    
     typealias SymbolAndSymbolString = (symbol: CalculatorSymbol, string: String)
     
     func test_calculator_symbol_enum() {
         // arrange
-//        let symbolAndSymbolStringArray: [SymbolAndSymbolString] = [
-//            (.add, " + "),
-//            (.divide, " / "),
-//            (.multiplication, " X "),
-//            (.percent, " % "),
-//            (.dot, "."),
-//            (.substraction, " - ")
-//        ]
-//
-//        for symbolAndSymbolString in symbolAndSymbolStringArray {
-//            when(
-//                symbolToTestIs: symbolAndSymbolString.symbol,
-//                thenSymbolStringShouldBe: symbolAndSymbolString.string
-//            )
-//        }
+       let symbolAndSymbolStringArray: [SymbolAndSymbolString] = [
+            (.add, " + "),
+           (.divide, " / "),
+           (.multiplication, " X "),
+            (.dot, "."),
+           (.substraction, " - ")
+        ]
+
+        for symbolAndSymbolString in symbolAndSymbolStringArray {
+            when(
+                symbolToTestIs: symbolAndSymbolString.symbol,
+                thenSymbolStringShouldBe: symbolAndSymbolString.string
+            )
+        }
         
-        when(
-            symbolToTestIs: .add,
-            thenSymbolStringShouldBe: " + "
-        )
+        when(symbolToTestIs: .add, thenSymbolStringShouldBe: " + ")
+        when(symbolToTestIs: .divide, thenSymbolStringShouldBe: " / ")
+        when(symbolToTestIs: .multiplication, thenSymbolStringShouldBe: " X ")
+        when(symbolToTestIs: .dot, thenSymbolStringShouldBe: ".")
+        when(symbolToTestIs: .substraction, thenSymbolStringShouldBe: " - ")
     }
 }
 
@@ -49,3 +44,4 @@ extension CalculatorModel_Tests {
         XCTAssertEqual(symbolStringShouldBe, symbolString)
     }
 }
+//
