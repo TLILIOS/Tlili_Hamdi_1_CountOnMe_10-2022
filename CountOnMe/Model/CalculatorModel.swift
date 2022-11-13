@@ -8,7 +8,7 @@ enum CalculatorSymbol {
         case .add: return " + "
         case .divide: return " / "
         case .multiplication: return " X "
-        case .dot: return "." 
+        case .dot: return "."
         case .substraction: return " - "
         }
     }
@@ -30,7 +30,7 @@ class CalculatorModel {
         self.delegate = delegate
     }
 
-    private var currentOperation: String = "0"
+    var currentOperation: String = "0"
     
     // Return an array with the splitted expression
     private var elements: [String] {
@@ -79,23 +79,23 @@ extension CalculatorModel {
     
     func add(number: String) {
         //The Operation starts with ZERO "0"
-        if number == "0" , currentOperation.count == 0  {
+        if number == "0" , currentOperation.count == 0 {
             self.currentOperation.append(number)
         } else {
             //Remove default view "0"
             if currentOperation.count == 0, number != "0" {
                 delegate.deleteZero()
             }
+            
             if expressionHaveResult {
                 delegate.addText(text: number)
                 self.currentOperation.append(number)
                 self.resetText()
-               
             }
+            
             delegate.addText(text: number)
             self.currentOperation.append(number)
-            
-            
+            print(currentOperation)
         }
     }
     
@@ -123,7 +123,7 @@ extension CalculatorModel {
     }
     
     func resetText() {
-        self.currentOperation = "0"
+        self.currentOperation = " "
         self.delegate.resetTextView()
     }
     
