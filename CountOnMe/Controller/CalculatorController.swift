@@ -15,24 +15,15 @@ class CalculatorController: UIViewController {
     
     @IBOutlet var operationButtons: [UIButton]!
     
-    @IBOutlet weak var dotButton: UIButton!
-    
     private lazy var model = CalculatorModel(delegate: self)
     
-    // View actions
-    
-    @IBAction func decimalTap(_ sender: UIButton) {
-        model.add(symbol: .dot)
-    }
-    
     @IBAction func allClearTap(_ sender: UIButton) {
-        model.resetText()
+        model.resetCurrentOperation()
+        resetTextView()
     }
     var userIsInMiddelOfTyping = false
     @IBAction func tappedNumberButton(_ sender: UIButton) {
-        guard let numberText = sender.title(for: .normal) else {
-            return
-        }
+        guard let numberText = sender.title(for: .normal) else { return }
         model.add(number: numberText)
     }
     
@@ -54,13 +45,19 @@ class CalculatorController: UIViewController {
     }
 
     @IBAction func tappedEqualButton(_ sender: UIButton) {
-        model.calculate()
+    model.calculate()
+        
     }
 }
 
 // MARK: - CalculatorDelegate
 
 extension CalculatorController: CalculatorDelegate {
+    
+    func clearAll() {
+        textView.text = " "
+    }
+    
     
     func showAlertController(title: String, message: String) {
         let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -70,14 +67,14 @@ extension CalculatorController: CalculatorDelegate {
     
     func deleteZero() {
         if textView.text.first == "0" {
-            resetTextView()
+            clearAll()
         }
     }
     
     func resetTextView() {
-        textView.text = " "
+        textView.text = "0"
     }
-
+    
     func addText(text: String) {
         textView.text.append(text)
     }
