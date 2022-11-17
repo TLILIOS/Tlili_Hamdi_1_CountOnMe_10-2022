@@ -114,7 +114,6 @@ extension CalculatorModel {
             )
             resetText()
         }
-        
     }
     
     func resetText() {
@@ -136,7 +135,6 @@ extension CalculatorModel {
             self.delegate.showAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !")
             return
         }
-        
         // Create local copy of operations
         var operationsToReduce = elements
         
