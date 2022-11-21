@@ -77,6 +77,7 @@ extension CalculatorModel {
         //The Operation starts with ZERO "0"
         if number == "0", elements.last?.count == 1 {
             self.currentOperation = number
+            
         } else {
             //Remove default view "0"
             if currentOperation.count == 1 , number != "0" {
