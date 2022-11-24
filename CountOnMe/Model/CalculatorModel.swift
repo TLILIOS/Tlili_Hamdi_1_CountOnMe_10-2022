@@ -75,13 +75,15 @@ extension CalculatorModel {
     
     func add(number: String) {
         //The Operation starts with ZERO "0"
-        if number == "0", elements.last?.count == 1 {
+        if number == "0",  currentOperation == "0" || currentOperation == " " {
             self.currentOperation = number
+            print("79")
             
         } else {
             //Remove default view "0"
-            if currentOperation.count == 1 , number != "0" {
+            if currentOperation == "0" , number != "0" {
                 delegate.deleteZero()
+                print("Zero effacé")
             }
             
             if expressionHaveResult {
@@ -102,6 +104,7 @@ extension CalculatorModel {
         if expressionHaveResult {
             delegate.clearAll()
             self.currentOperation.append(symbol.getSymbolString())
+            
             delegate.addText(text: self.currentOperation)
             expressionHaveResult = false
         } else if expressionIsCorrect {
@@ -113,7 +116,7 @@ extension CalculatorModel {
                 title: "Zéro!",
                 message: "Vous ne pouvez pas insérer << \(symbol.getSymbolString()) >> à cette endroit "
             )
-            resetText()
+            delegate.clearAll()
         }
     }
     
