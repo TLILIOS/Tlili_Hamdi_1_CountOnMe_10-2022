@@ -44,7 +44,7 @@ class CalculatorModel_Tests: XCTestCase {
 //        XCTAssertEqual(model.currentOperation, "03")
 //        XCTAssertEqual(protocolValue, "RESET")
 //    }
-    
+   
     func testGivenCleanView_WhenNumberButtonPressed_ThenNumberAdded() {
         var number = "0"
         model.currentOperation = number
@@ -60,7 +60,14 @@ class CalculatorModel_Tests: XCTestCase {
         model.add(number: number)
         XCTAssertEqual(model.currentOperation, number)
     }
-   func testGiven
+    func testGivenStartingOperation_WhenAddSymbol_ThenSymbolAdded() {
+
+        let symbol: CalculatorSymbol = .add
+        model.expressionHaveResult = true
+        model.add(symbol: symbol )
+        XCTAssertEqual(model.currentOperation, symbol.getSymbolString())
+        
+    }
     
 }
 

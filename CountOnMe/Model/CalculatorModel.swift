@@ -100,6 +100,7 @@ extension CalculatorModel {
     func add(symbol: CalculatorSymbol) {
         if expressionHaveResult {
             delegate.clearAll()
+            resetText()
             self.currentOperation.append(symbol.getSymbolString())
             
             delegate.addText(text: self.currentOperation)
@@ -143,12 +144,12 @@ extension CalculatorModel {
         while operationsToReduce.count > 1 {
             let index = checkPriorityOperand(arrayOfElements: operationsToReduce)
             guard let left = Double(operationsToReduce[index - 1]) else {
-                self.delegate.showAlertController(title: "Zéro!", message: "1er numéro est incorrect")
+                self.delegate.showAlertController(title: "Zéro!", message: "1er élement est incorrect")
                 return
             }
             let operand = operationsToReduce[index]
             guard let right = Double(operationsToReduce[index + 1]) else {
-                self.delegate.showAlertController(title: "Zéro!", message: "2ème numéro est incorrect")
+                self.delegate.showAlertController(title: "Zéro!", message: "3ème élement est incorrect")
                 return
             }
             
