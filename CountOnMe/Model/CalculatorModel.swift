@@ -31,7 +31,7 @@ class CalculatorModel {
     }
 
     var currentOperation: String = "0"
-    private var expressionHaveResult: Bool = false
+    var expressionHaveResult: Bool = false
     
     // Return an array with the splitted expression
     private var elements: [String] {
@@ -75,15 +75,12 @@ extension CalculatorModel {
     
     func add(number: String) {
         //The Operation starts with ZERO "0"
-        if number == "0",  currentOperation == "0" || currentOperation == " " {
+        if number == "0",  currentOperation == "0" || currentOperation == "" {
             self.currentOperation = number
-            print("79")
-            
         } else {
             //Remove default view "0"
             if currentOperation == "0" , number != "0" {
                 delegate.deleteZero()
-                print("Zero effacé")
             }
             
             if expressionHaveResult {
@@ -126,7 +123,7 @@ extension CalculatorModel {
     }
     
     func resetCurrentOperation() {
-        self.currentOperation = " "
+        self.currentOperation = ""
     }
     
     func calculate() {

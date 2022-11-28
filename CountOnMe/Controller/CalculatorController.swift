@@ -19,7 +19,7 @@ class CalculatorController: UIViewController {
     
     @IBAction func allClearTap(_ sender: UIButton) {
         model.resetCurrentOperation()
-        //clearAll()
+
         resetTextView()
     }
     var userIsInMiddelOfTyping = false
