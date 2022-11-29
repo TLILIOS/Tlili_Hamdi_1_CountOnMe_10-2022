@@ -62,18 +62,31 @@ class CalculatorModel_Tests: XCTestCase {
     }
     func testGivenStartingOperation_WhenAddSymbol_ThenSymbolAdded() {
         
-        let symbol: CalculatorSymbol = .add
+        var symbol: CalculatorSymbol = .divide
         let text = symbol.getSymbolString()
         model.expressionHaveResult = true
         model.add(symbol: symbol )
         XCTAssertEqual(model.currentOperation, text)
-       
-        model.add(symbol: symbol)
-        XCTAssertEqual(model.currentOperation, text )
-      
+        model.expressionHaveResult = false
         model.add(symbol: symbol)
         
+        XCTAssertEqual(model.currentOperation, text )
+       
+        model.add(symbol: symbol)
+        symbol = .multiplication
+        XCTAssertEqual(model.currentOperation, text)
+        model.add(symbol: symbol)
+        symbol = .substraction
+        XCTAssertEqual(model.currentOperation, text)
+        model.add(symbol: symbol)
+        symbol = .add
+        XCTAssertEqual(model.currentOperation, text)
+    
+        model.expressionHaveResult = false
+        model.add(symbol: symbol)
+        XCTAssertEqual(model.currentOperation, text)
     }
+    //func test
     
 }
 

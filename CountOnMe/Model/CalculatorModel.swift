@@ -35,7 +35,7 @@ class CalculatorModel {
     
     // Return an array with the splitted expression
     private var elements: [String] {
-        return self.currentOperation.split(separator: " ").map { "\($0)" }
+        return self.currentOperation.split(separator:" ").map { "\($0)" }
     }
     
     private var expressionHaveEnoughElement: Bool {
@@ -79,7 +79,7 @@ extension CalculatorModel {
             self.currentOperation = number
         } else {
             //Remove default view "0"
-            if currentOperation == "0" , number != "0" {
+            if currentOperation == "0" || currentOperation == "" , number != "0" {
                 delegate.deleteZero()
             }
             
@@ -98,15 +98,16 @@ extension CalculatorModel {
     }
     
     func add(symbol: CalculatorSymbol) {
+        let text = symbol.getSymbolString()
         if expressionHaveResult {
             delegate.clearAll()
             resetText()
-            self.currentOperation.append(symbol.getSymbolString())
+            self.currentOperation.append(text)
             
             delegate.addText(text: self.currentOperation)
             expressionHaveResult = false
         } else if expressionIsCorrect {
-            let text = symbol.getSymbolString()
+            
             delegate.addText(text: text)
             self.currentOperation.append(text)
         } else {
@@ -180,7 +181,7 @@ extension CalculatorModel {
             
         }
         
-        let result = "  \(operationsToReduce.first!)"
+        let result = "\(operationsToReduce.first!)"
         resetText()
         self.currentOperation.append(result)
         delegate.addText(text: result)

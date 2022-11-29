@@ -56,7 +56,7 @@ class CalculatorController: UIViewController {
 extension CalculatorController: CalculatorDelegate {
     
     func clearAll() {
-        textView.text = " "
+        textView.text = ""
     }
     
     
