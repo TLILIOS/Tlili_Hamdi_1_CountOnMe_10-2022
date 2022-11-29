@@ -24,7 +24,7 @@ protocol CalculatorDelegate {
 
 class CalculatorModel {
     
-    private let delegate: CalculatorDelegate
+   let delegate: CalculatorDelegate
     
     init(delegate: CalculatorDelegate) {
         self.delegate = delegate
@@ -42,7 +42,7 @@ class CalculatorModel {
         return elements.count >= 3
     }
    
-    private var expressionIsCorrect: Bool {
+    var expressionIsCorrect: Bool {
         guard elements.last != nil else { return false }
         return elements.last != "+" && elements.last != "-" && elements.last != "X" && elements.last != "/"
     }

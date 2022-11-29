@@ -61,11 +61,17 @@ class CalculatorModel_Tests: XCTestCase {
         XCTAssertEqual(model.currentOperation, number)
     }
     func testGivenStartingOperation_WhenAddSymbol_ThenSymbolAdded() {
-
+        
         let symbol: CalculatorSymbol = .add
+        let text = symbol.getSymbolString()
         model.expressionHaveResult = true
         model.add(symbol: symbol )
-        XCTAssertEqual(model.currentOperation, symbol.getSymbolString())
+        XCTAssertEqual(model.currentOperation, text)
+       
+        model.add(symbol: symbol)
+        XCTAssertEqual(model.currentOperation, text )
+      
+        model.add(symbol: symbol)
         
     }
     
