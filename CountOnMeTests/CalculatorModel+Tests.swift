@@ -44,13 +44,15 @@ class CalculatorModel_Tests: XCTestCase {
         XCTAssertEqual(model.currentOperation, number)
     }
     
-    func testGivenZeroOnTheScreen_WhenNumberButtonPressedOtherThenZero_ThenDeletZero() {
+    func testGivenClearScreen_WhenNumberButtonPressedOtherThenZero_ThenDeletZero() {
         number = "1"
+        model.currentOperation = ""
         model.add(number: number)
+        XCTAssertEqual(model.currentOperation, "1")
         XCTAssertEqual(protocolValue, "ADDTEXT")
     }
-    //Change
-    func testGivenrWhenHaveResult() {
+    
+    func testGivenExpressionHaveResult_WhenAddNumber_ThenNumberAdded() {
         model.expressionHaveResult = true
         number = "1"
         model.add(number: number)
@@ -85,24 +87,28 @@ class CalculatorModel_Tests: XCTestCase {
     func testGivenExpressionEndsWithSymbol_whenEquelButttonPressed_thenAllertShowUp() {
         model.currentOperation = "1 +"
         model.calculate()
+        XCTAssertEqual(model.currentOperation, "1 +")
         XCTAssertEqual( protocolValue, "SHOW_ALERT")
     }
     
     func testGivenExpressionContainsOnlyOne_whenEquelButttonPressed_thenAllertShowUp() {
         model.currentOperation = "1"
         model.calculate()
+        XCTAssertEqual(model.currentOperation, "1")
         XCTAssertEqual( protocolValue, "SHOW_ALERT")
     }
     
     func testGivenExpressionBeginsWithSymbol_whenEquelButttonPressed_thenAllertShowUp() {
         model.currentOperation = "+ + 1"
         model.calculate()
+        XCTAssertEqual(model.currentOperation, "+ + 1")
         XCTAssertEqual( protocolValue, "SHOW_ALERT")
     }
     
     func testGivenExpressionHasTwoSymbolConsecutive_whenEquelButttonPressed_thenAllertShowUp() {
         model.currentOperation = "1 + + 1"
         model.calculate()
+        XCTAssertEqual(model.currentOperation, "1 + + 1")
         XCTAssertEqual( protocolValue, "SHOW_ALERT")
     }
     
@@ -133,6 +139,7 @@ class CalculatorModel_Tests: XCTestCase {
     func testGivenOneDividedByZero_whenEquelButttonPressed_thenAllertShowUp() {
         model.currentOperation = "1/0"
         model.calculate()
+        XCTAssertEqual(model.currentOperation, "1/0")
         XCTAssertEqual(protocolValue, "SHOW_ALERT")
     }
     
@@ -140,6 +147,7 @@ class CalculatorModel_Tests: XCTestCase {
         model.calculate()
         model.currentOperation = "86"
         model.delegate.clearAll()
+        XCTAssertEqual(model.currentOperation, "86")
         XCTAssertEqual(protocolValue, "CLEARALL")
     }
     
@@ -147,6 +155,7 @@ class CalculatorModel_Tests: XCTestCase {
         model.calculate()
         model.currentOperation = "5"
         model.delegate.deleteZero()
+        XCTAssertEqual(model.currentOperation, "5")
         XCTAssertEqual(protocolValue, "DELETEZERO")
     }
     
