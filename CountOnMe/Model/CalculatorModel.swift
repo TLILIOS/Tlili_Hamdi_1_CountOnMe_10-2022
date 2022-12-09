@@ -47,11 +47,6 @@ class CalculatorModel {
         return elements.last != "+" && elements.last != "-" && elements.last != "X" && elements.last != "/"
     }
     
-    // Check if the expression is empty or not
-    private var expressionIsEmpty:Bool {
-        return elements.isEmpty
-    }
-    
     // MARK: - Private methods
     
     // Check if multiplication or divison, if so it will return concerned operand index.
@@ -107,7 +102,6 @@ extension CalculatorModel {
             delegate.addText(text: self.currentOperation)
             expressionHaveResult = false
         } else if expressionIsCorrect {
-            
             delegate.addText(text: text)
             self.currentOperation.append(text)
         } else {
@@ -189,9 +183,6 @@ extension CalculatorModel {
     }
 
     func resultIsAnInteger(number: Double) -> Bool {
-        if number.truncatingRemainder(dividingBy: 1) == 0 {
-            return true
-        }
-        return false
+        return number.truncatingRemainder(dividingBy: 1) == 0
     }
 }

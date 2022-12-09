@@ -5,7 +5,9 @@ class CalculatorModel_Tests: XCTestCase {
     
     private lazy var model = CalculatorModel(delegate: self)
     typealias SymbolAndSymbolString = (symbol: CalculatorSymbol, string: String)
+    
     var protocolValue: String = ""
+    var number = "0"
     
     func test_calculator_symbol_enum() {
         // arrange
@@ -13,7 +15,6 @@ class CalculatorModel_Tests: XCTestCase {
             (.add, " + "),
             (.divide, " / "),
             (.multiplication, " X "),
-           
             (.substraction, " - ")
         ]
         
@@ -30,63 +31,124 @@ class CalculatorModel_Tests: XCTestCase {
         when(symbolToTestIs: .substraction, thenSymbolStringShouldBe: " - ")
     }
     
-//    func test1() {
-//        model.currentOperation = ""
-//        model.add(number: "0")
-//        XCTAssertEqual(model.currentOperation, "0")
-//
-//        model.currentOperation = ""
-//        model.add(number: "1")
-//        XCTAssertEqual(protocolValue, "DELETEZERO")
-//
-//        model.currentOperation = "1 + 2 ="
-//        model.add(number: "3")
-//        XCTAssertEqual(model.currentOperation, "03")
-//        XCTAssertEqual(protocolValue, "RESET")
-//    }
-   
-    func testGivenCleanView_WhenNumberButtonPressed_ThenNumberAdded() {
-        var number = "0"
+    func testGivenZeroOnTheScreen_WhenStartWithZero_ThenOnlyOneZeroStill() {
+        
         model.currentOperation = number
         model.add(number: number)
         XCTAssertEqual(model.currentOperation, number)
+    }
+    
+    func testGivenCleanView_WhenStartWithZero_ThenShouldBeZero() {
         model.currentOperation = ""
         model.add(number: number)
         XCTAssertEqual(model.currentOperation, number)
+    }
+    
+    func testGivenZeroOnTheScreen_WhenNumberButtonPressedOtherThenZero_ThenDeletZero() {
         number = "1"
         model.add(number: number)
-        XCTAssertEqual(protocolValue, "DELETEZERO")
+        XCTAssertEqual(protocolValue, "ADDTEXT")
+    }
+    //Change
+    func testGivenrWhenHaveResult() {
+        model.expressionHaveResult = true
+        number = "1"
+        model.add(number: number)
+        XCTAssertEqual(model.currentOperation, "1")
+        XCTAssertFalse(model.expressionHaveResult)
+    }
+    
+    func testGivenExpressionHaveResult_WhenNumberButtonPressed_ThenClearAll() {
         model.expressionHaveResult = true
         model.add(number: number)
         XCTAssertEqual(model.currentOperation, number)
     }
+    
     func testGivenStartingOperation_WhenAddSymbol_ThenSymbolAdded() {
         
-        var symbol: CalculatorSymbol = .divide
+        let symbol: CalculatorSymbol = .divide
         let text = symbol.getSymbolString()
-        model.expressionHaveResult = true
-        model.add(symbol: symbol )
-        XCTAssertEqual(model.currentOperation, text)
-        model.expressionHaveResult = false
-        model.add(symbol: symbol)
         
-        XCTAssertEqual(model.currentOperation, text )
-       
+        model.expressionHaveResult = true
         model.add(symbol: symbol)
-        symbol = .multiplication
         XCTAssertEqual(model.currentOperation, text)
-        model.add(symbol: symbol)
-        symbol = .substraction
-        XCTAssertEqual(model.currentOperation, text)
-        model.add(symbol: symbol)
-        symbol = .add
-        XCTAssertEqual(model.currentOperation, text)
-    
+        
         model.expressionHaveResult = false
         model.add(symbol: symbol)
         XCTAssertEqual(model.currentOperation, text)
+        
+        model.currentOperation = "1 + 2"
+        model.add(symbol: .add)
+        XCTAssertEqual(model.currentOperation, "1 + 2 + ")
     }
-    //func test
+    
+    func testGivenExpressionEndsWithSymbol_whenEquelButttonPressed_thenAllertShowUp() {
+        model.currentOperation = "1 +"
+        model.calculate()
+        XCTAssertEqual( protocolValue, "SHOW_ALERT")
+    }
+    
+    func testGivenExpressionContainsOnlyOne_whenEquelButttonPressed_thenAllertShowUp() {
+        model.currentOperation = "1"
+        model.calculate()
+        XCTAssertEqual( protocolValue, "SHOW_ALERT")
+    }
+    
+    func testGivenExpressionBeginsWithSymbol_whenEquelButttonPressed_thenAllertShowUp() {
+        model.currentOperation = "+ + 1"
+        model.calculate()
+        XCTAssertEqual( protocolValue, "SHOW_ALERT")
+    }
+    
+    func testGivenExpressionHasTwoSymbolConsecutive_whenEquelButttonPressed_thenAllertShowUp() {
+        model.currentOperation = "1 + + 1"
+        model.calculate()
+        XCTAssertEqual( protocolValue, "SHOW_ALERT")
+    }
+    
+    func testGivenOnePlusOne_whenEquelButttonPressed_thenTheResultShoudBeTwo(){
+        model.currentOperation = "1 + 1"
+        model.calculate()
+        XCTAssertEqual(model.currentOperation, "2")
+    }
+    
+    func testGivenOneTimesOne_whenEquelButttonPressed_thenTheResultShoudBeOne(){
+        model.currentOperation = "1 X 1"
+        model.calculate()
+        XCTAssertEqual(model.currentOperation, "1")
+    }
+    
+    func testGivenOneDividedByOne_whenEquelButttonPressed_thenTheResultShoudBeOne() {
+        model.currentOperation = "1 / 1"
+        model.calculate()
+        XCTAssertEqual(model.currentOperation, "1")
+    }
+    
+    func testGivenOneMinusOne_whenEquelButttonPressed_thenTheResultShoudBeZero(){
+        model.currentOperation = "1 - 1"
+        model.calculate()
+        XCTAssertEqual(model.currentOperation, "0")
+    }
+    
+    func testGivenOneDividedByZero_whenEquelButttonPressed_thenAllertShowUp() {
+        model.currentOperation = "1/0"
+        model.calculate()
+        XCTAssertEqual(protocolValue, "SHOW_ALERT")
+    }
+    
+    func testGivenTextOnTheScreen_WhenAcButtonPressed_ThenAllClear() {
+        model.calculate()
+        model.currentOperation = "86"
+        model.delegate.clearAll()
+        XCTAssertEqual(protocolValue, "CLEARALL")
+    }
+    
+    func testGivenTextOnTheScreen_WhenResset_ThenShouldBeZeroOnTheScreen() {
+        model.calculate()
+        model.currentOperation = "5"
+        model.delegate.deleteZero()
+        XCTAssertEqual(protocolValue, "DELETEZERO")
+    }
     
 }
 
@@ -103,28 +165,28 @@ extension CalculatorModel_Tests {
         // assert
         XCTAssertEqual(symbolStringShouldBe, symbolString)
     }
+    
 }
 
 extension CalculatorModel_Tests: CalculatorDelegate {
-    
-    func showAlertController(title: String, message: String) {
-        protocolValue = "SHOW_ALERT"
+    func resetTextView() {
+        protocolValue = "RESET"
     }
     
     func clearAll() {
-        protocolValue = "CLEAR_ALL"
+        protocolValue = "CLEARALL"
+    }
+    
+    func showAlertController(title: String, message: String) {
+        protocolValue = "SHOW_ALERT"
     }
     
     func testshowAlertController(title: String, message: String) {
         protocolValue = "ALERT"
     }
     
-    func resetTextView() {
-        protocolValue = "RESET"
-    }
-    
     func addText(text: String) {
-        //
+        protocolValue = "ADDTEXT"
     }
     
     func deleteZero() {
@@ -132,5 +194,5 @@ extension CalculatorModel_Tests: CalculatorDelegate {
     }
     
 }
- 
+
 
