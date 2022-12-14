@@ -168,7 +168,7 @@ extension CalculatorModel {
             let startIndex: Int = index-1
             let endIndex: Int = index+1
             
-            let resultNumber: Any = resultIsAnInteger(number: result) ? Int(result) : result
+            let resultNumber: Any = resultIsAnInteger(number: result) ? Int(result): result
             
             operationsToReduce.replaceSubrange(Range(startIndex...endIndex), with: [String(describing: resultNumber)])
             currentOperation = operand
