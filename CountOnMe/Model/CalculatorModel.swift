@@ -22,7 +22,7 @@ protocol CalculatorDelegate {
     func clearAll()
 }
 
-class CalculatorModel {
+final class CalculatorModel {
     
    let delegate: CalculatorDelegate
     
@@ -95,11 +95,12 @@ extension CalculatorModel {
     func add(symbol: CalculatorSymbol) {
         let text = symbol.getSymbolString()
         if expressionHaveResult {
-            delegate.clearAll()
-            resetText()
-            self.currentOperation.append(text)
+            //self.resetText()
+           // delegate.clearAll()
+            delegate.resetTextView()
+            //self.currentOperation.append(text)
             
-            delegate.addText(text: self.currentOperation)
+            //delegate.addText(text: self.currentOperation)
             expressionHaveResult = false
         } else if expressionIsCorrect {
             delegate.addText(text: text)
