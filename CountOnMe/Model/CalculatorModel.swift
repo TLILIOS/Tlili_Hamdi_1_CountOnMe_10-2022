@@ -50,7 +50,7 @@ final class CalculatorModel {
     // MARK: - Private methods
     
     // Check if multiplication or divison, if so it will return concerned operand index.
-    private func checkPriorityOperand(arrayOfElements: [String]) -> Int {
+    func checkPriorityOperand(arrayOfElements: [String]) -> Int {
         for (index, element) in arrayOfElements.enumerated() {
             if element == "X" || element == "/" {
                 return index
@@ -95,12 +95,8 @@ extension CalculatorModel {
     func add(symbol: CalculatorSymbol) {
         let text = symbol.getSymbolString()
         if expressionHaveResult {
-            //self.resetText()
-           // delegate.clearAll()
-            delegate.resetTextView()
-            //self.currentOperation.append(text)
-            
-            //delegate.addText(text: self.currentOperation)
+            self.resetText()
+            delegate.clearAll()
             expressionHaveResult = false
         } else if expressionIsCorrect {
             delegate.addText(text: text)

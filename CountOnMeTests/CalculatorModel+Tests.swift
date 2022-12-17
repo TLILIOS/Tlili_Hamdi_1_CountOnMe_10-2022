@@ -66,19 +66,14 @@ class CalculatorModel_Tests: XCTestCase {
         XCTAssertEqual(model.currentOperation, number)
     }
     
-    func testGivenStartingOperation_WhenAddSymbol_ThenSymbolAdded() {
-        
+    func testGivenStartingOperation_WhenAddSymbol_ThenClearAll() {
         let symbol: CalculatorSymbol = .divide
-        let text = symbol.getSymbolString()
-        
         model.expressionHaveResult = true
         model.add(symbol: symbol)
-        XCTAssertEqual(model.currentOperation, text)
-        
+        XCTAssertEqual(model.currentOperation, "")
+    }
+    func testGivenStartingOperation_WhenAddSymbol_ThenSymbolAdded() {
         model.expressionHaveResult = false
-        model.add(symbol: symbol)
-        XCTAssertEqual(model.currentOperation, text)
-        
         model.currentOperation = "1 + 2"
         model.add(symbol: .add)
         XCTAssertEqual(model.currentOperation, "1 + 2 + ")
